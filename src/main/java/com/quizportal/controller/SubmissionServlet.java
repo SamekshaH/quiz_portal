@@ -60,6 +60,6 @@ public class SubmissionServlet extends HttpServlet {
         req.setAttribute("total", questions.size());
         req.setAttribute("questions", questions);
         req.setAttribute("answers", answers);
-        req.getRequestDispatcher("/student/result.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/student/result.jsp").forward(req, resp);
     }
 }

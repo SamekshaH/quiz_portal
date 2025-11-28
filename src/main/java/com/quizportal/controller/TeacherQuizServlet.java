@@ -27,22 +27,22 @@ public class TeacherQuizServlet extends HttpServlet {
         if (pathInfo == null || pathInfo.equals("/dashboard")) {
             List<Quiz> quizzes = quizDAO.getAllQuizzes();
             req.setAttribute("quizzes", quizzes);
-            req.getRequestDispatcher("/teacher/dashboard.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/teacher/dashboard.jsp").forward(req, resp);
         } else if (pathInfo.equals("/create_quiz")) {
-            req.getRequestDispatcher("/teacher/create_quiz.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/teacher/create_quiz.jsp").forward(req, resp);
         } else if (pathInfo.equals("/view_quiz")) {
             int quizId = Integer.parseInt(req.getParameter("id"));
             Quiz quiz = quizDAO.getQuizById(quizId);
             req.setAttribute("quiz", quiz);
             req.setAttribute("questions", questionDAO.getQuestionsByQuizId(quizId));
-            req.getRequestDispatcher("/teacher/view_quiz.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/teacher/view_quiz.jsp").forward(req, resp);
         } else if (pathInfo.equals("/quiz_results")) {
             int quizId = Integer.parseInt(req.getParameter("id"));
             Quiz quiz = quizDAO.getQuizById(quizId);
             List<Submission> submissions = submissionDAO.getSubmissionsByQuizId(quizId);
             req.setAttribute("quiz", quiz);
             req.setAttribute("submissions", submissions);
-            req.getRequestDispatcher("/teacher/quiz_results.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/teacher/quiz_results.jsp").forward(req, resp);
         } else if (pathInfo.equals("/toggle_status")) {
             int quizId = Integer.parseInt(req.getParameter("id"));
             Quiz quiz = quizDAO.getQuizById(quizId);

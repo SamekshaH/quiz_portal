@@ -31,7 +31,7 @@ public class StudentQuizServlet extends HttpServlet {
             req.setAttribute("quizzes", quizzes);
             req.setAttribute("submissionDAO", submissionDAO); // To check if attempted
             req.setAttribute("studentId", user.getId());
-            req.getRequestDispatcher("/student/dashboard.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/student/dashboard.jsp").forward(req, resp);
         } else if (pathInfo.equals("/attempt_quiz")) {
             int quizId = Integer.parseInt(req.getParameter("id"));
             
@@ -51,12 +51,12 @@ public class StudentQuizServlet extends HttpServlet {
             
             req.setAttribute("quiz", quiz);
             req.setAttribute("questions", questionDAO.getQuestionsByQuizId(quizId));
-            req.getRequestDispatcher("/student/attempt_quiz.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/student/attempt_quiz.jsp").forward(req, resp);
         } else if (pathInfo.equals("/my_results")) {
              List<Submission> submissions = submissionDAO.getSubmissionsByStudentId(user.getId());
              req.setAttribute("submissions", submissions);
              req.setAttribute("quizDAO", quizDAO);
-             req.getRequestDispatcher("/student/my_results.jsp").forward(req, resp);
+             req.getRequestDispatcher("/WEB-INF/views/student/my_results.jsp").forward(req, resp);
         }
     }
 }
