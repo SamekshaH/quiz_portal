@@ -26,11 +26,20 @@ public class StudentQuizServlet extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
 
         if (pathInfo == null || pathInfo.equals("/dashboard")) {
-            List<Quiz> quizzes = quizDAO.getAllQuizzes(); // Show all, let UI filter or show status
-            // Or better, show all but indicate status
-            req.setAttribute("quizzes", quizzes);
-            req.setAttribute("submissionDAO", submissionDAO); // To check if attempted
-            req.setAttribute("studentId", user.getId());
+            List<Quiz> allQuizzes = quizDAO.getAllQuizzes();
+            java.util.List<Quiz> availableQuizzes = new java.util.ArrayList<>();
+            java.util.List<Quiz> attendedQuizzes = new java.util.ArrayList<>();
+
+            for (Quiz quiz : allQuizzes) {
+                if (submissionDAO.hasStudentAttempted(quiz.getId(), user.getId())) {
+                    attendedQuizzes.add(quiz);
+                } else {
+                    availableQuizzes.add(quiz);
+                }
+            }
+
+            req.setAttribute("availableQuizzes", availableQuizzes);
+            req.setAttribute("attendedQuizzes", attendedQuizzes);
             req.getRequestDispatcher("/WEB-INF/views/student/dashboard.jsp").forward(req, resp);
         } else if (pathInfo.equals("/attempt_quiz")) {
             int quizId = Integer.parseInt(req.getParameter("id"));
