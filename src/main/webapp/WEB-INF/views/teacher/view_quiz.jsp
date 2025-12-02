@@ -29,11 +29,15 @@
                                     <% List<Question> questions = (List<Question>) request.getAttribute("questions");
                                             if (questions != null) {
                                             int i = 1;
-                                            for (Question q : questions) {
-                                            %>
+                                            for (Question q : questions) { %>
                                             <div class="question-block">
-                                                <h5>Q<%= i++ %>: <%= q.getQuestionText() %>
-                                                </h5>
+                                                <div class="d-flex justify-content-between">
+                                                    <h5>Q<%= i++ %>: <%= q.getQuestionText() %>
+                                                    </h5>
+                                                    <a href="delete_question?id=<%= q.getId() %>&quizId=<%= quiz.getId() %>"
+                                                        class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this question?')">Delete</a>
+                                                </div>
                                                 <ul class="list-unstyled ml-3">
                                                     <li class="<%= " A".equals(q.getCorrectOption())
                                                         ? "text-success font-weight-bold" : "" %>">A) <%= q.getOptionA()

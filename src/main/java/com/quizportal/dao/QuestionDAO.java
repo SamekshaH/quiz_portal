@@ -50,4 +50,16 @@ public class QuestionDAO {
         }
         return false;
     }
+
+    public boolean deleteQuestion(int id) {
+        String sql = "DELETE FROM questions WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

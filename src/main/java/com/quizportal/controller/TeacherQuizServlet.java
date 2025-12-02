@@ -61,21 +61,31 @@ public class TeacherQuizServlet extends HttpServlet {
         String pathInfo = req.getPathInfo();
 
         if (pathInfo.equals("/create_quiz")) {
-            String title = req.getParameter("title");
-            String description = req.getParameter("description");
-            int duration = Integer.parseInt(req.getParameter("duration"));
-            
-            User user = (User) req.getSession().getAttribute("user");
-            
-            Quiz quiz = new Quiz();
-            quiz.setTitle(title);
-            quiz.setDescription(description);
-            quiz.setDurationMinutes(duration);
-            quiz.setStatus("CLOSED");
-            quiz.setCreatedBy(user.getId());
-            
-            quizDAO.createQuiz(quiz);
-            resp.sendRedirect("dashboard");
+            try {
+                String title = req.getParameter("title");
+                String description = req.getParameter("description");
+                int duration = Integer.parseInt(req.getParameter("duration"));
+                
+                User user = (User) req.getSession().getAttribute("user");
+                
+                Quiz quiz = new Quiz();
+                quiz.setTitle(title);
+                quiz.setDescription(description);
+                quiz.setDurationMinutes(duration);
+                quiz.setStatus("CLOSED");
+                quiz.setCreatedBy(user.getId());
+                
+                if (quizDAO.createQuiz(quiz)) {
+                    resp.sendRedirect("dashboard");
+                } else {
+                    req.setAttribute("error", "Failed to create quiz. Please try again.");
+                    req.getRequestDispatcher("/WEB-INF/views/teacher/create_quiz.jsp").forward(req, resp);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                req.setAttribute("error", "An error occurred: " + e.getMessage());
+                req.getRequestDispatcher("/WEB-INF/views/teacher/create_quiz.jsp").forward(req, resp);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ com\quizportal\model\User.class
 com\quizportal\filter\RoleFilter.class
 com\quizportal\filter\AuthFilter.class
 com\quizportal\model\Question.class
+com\quizportal\controller\DeleteQuestionServlet.class
 com\quizportal\dao\QuestionDAO.class
 com\quizportal\controller\SubmissionServlet.class
 com\quizportal\controller\QuestionServlet.class

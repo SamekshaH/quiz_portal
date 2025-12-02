@@ -83,13 +83,55 @@ public class QuizDAO {
     }
     
     public boolean deleteQuiz(int quizId) {
-        String sql = "DELETE FROM quizzes WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, quizId);
-            return stmt.executeUpdate() > 0;
+        String deleteAnswersSql = "DELETE FROM submission_answers WHERE submission_id IN (SELECT id FROM submissions WHERE quiz_id = ?)";
+        String deleteSubmissionsSql = "DELETE FROM submissions WHERE quiz_id = ?";
+        String deleteQuestionsSql = "DELETE FROM questions WHERE quiz_id = ?";
+        String deleteQuizSql = "DELETE FROM quizzes WHERE id = ?";
+        
+        Connection conn = null;
+        try {
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false); // Start transaction
+
+            try (PreparedStatement stmt1 = conn.prepareStatement(deleteAnswersSql);
+                 PreparedStatement stmt2 = conn.prepareStatement(deleteSubmissionsSql);
+                 PreparedStatement stmt3 = conn.prepareStatement(deleteQuestionsSql);
+                 PreparedStatement stmt4 = conn.prepareStatement(deleteQuizSql)) {
+                
+                // 1. Delete Submission Answers
+                stmt1.setInt(1, quizId);
+                stmt1.executeUpdate();
+                
+                // 2. Delete Submissions
+                stmt2.setInt(1, quizId);
+                stmt2.executeUpdate();
+                
+                // 3. Delete Questions
+                stmt3.setInt(1, quizId);
+                stmt3.executeUpdate();
+                
+                // 4. Delete Quiz
+                stmt4.setInt(1, quizId);
+                int rows = stmt4.executeUpdate();
+                
+                conn.commit(); // Commit transaction
+                return rows > 0;
+            } catch (SQLException e) {
+                conn.rollback(); // Rollback on error
+                e.printStackTrace();
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return false;
     }
