@@ -36,19 +36,19 @@
                                             String selected = answers.get(q.getId());
                                             boolean isCorrect = q.getCorrectOption().equals(selected);
                                             %>
-                                            <div class="question-block" style="border-left: 5px solid <%= isCorrect ? "
-                                                #28a745" : "#dc3545" %>;">
-                                                <h5>Q<%= i++ %>: <%= q.getQuestionText() %>
-                                                </h5>
-                                                <p>Your Answer: <span class="<%= isCorrect ? " correct-answer"
-                                                        : "wrong-answer" %>"><%= selected !=null ? selected
-                                                            : "Not Answered" %></span></p>
-                                                <% if (!isCorrect) { %>
-                                                    <p class="correct-answer">Correct Answer: <%= q.getCorrectOption()
-                                                            %>
-                                                    </p>
-                                                    <% } %>
-                                            </div>
+                                            <div class="question-block" style="border-left: 5px solid <%= isCorrect ? "#28a745" : "#dc3545" %>;">
+    <h5>Q<%= i++ %>: <%= q.getQuestionText() %></h5>
+    <p>Your Answer:
+        <span class="<%= isCorrect ? "correct-answer" : "wrong-answer" %>">
+            <%= selected != null ? selected : "Not Answered" %>
+        </span>
+    </p>
+
+    <% if (!isCorrect) { %>
+        <p class="correct-answer">Correct Answer: <%= q.getCorrectOption() %></p>
+    <% } %>
+</div>
+
                                             <% } } %>
                         </div>
                     </body>
