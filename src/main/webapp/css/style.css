@@ -4,7 +4,7 @@ body {
 
 .card {
     margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar {
@@ -33,4 +33,11 @@ body {
 .wrong-answer {
     color: #dc3545;
     font-weight: bold;
+}
+
+.quiz-name-highlight {
+    color: #007bff;
+    font-weight: 700;
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
 }
